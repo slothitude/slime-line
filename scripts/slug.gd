@@ -12,6 +12,8 @@ var tilt_y := TiltSource.new()
 var bounds := Rect2()                 # zero-size = unclamped (tests)
 var input_dir := Vector2.ZERO
 var trail: SlimeTrail = null
+var shiver := 0.0                     # px of salt-fear jitter (main drives it
+                                      # from Salt.shiver_strength each frame)
 
 var _antenna_wobble := 0.0
 var _sprite: Sprite2D = null
@@ -149,6 +151,12 @@ func _apply_juice(delta: float) -> void:
 		1.0 + Feel.SQUASH_MAX * speed_ratio,
 		1.0 + Feel.SQUASH_MIN * speed_ratio) * Feel.SLUG_SPRITE_SCALE
 	_sprite.scale = _sprite.scale.lerp(target, Feel.SQUASH_LERP_SPEED * delta)
+	# salt proximity shiver: wobble the body (deterministic — global RNG is
+	# sacred: the seeded replays reproduce bug fields from it), easing off as
+	# the threat leaves
+	shiver = maxf(0.0, shiver - Feel.SALT_SHIVER_DECAY_PX_SEC * delta)
+	var wobble_t := float(Time.get_ticks_msec()) * 0.05
+	_sprite.offset = Vector2(sin(wobble_t), cos(wobble_t * 1.37)) * shiver
 
 
 func _draw() -> void:

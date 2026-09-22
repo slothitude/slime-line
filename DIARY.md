@@ -31,3 +31,11 @@ WordEngine landed (seeded word deals from the 26,955-word SCOWL tier, the 60/40 
 
 Steps: 1) M3 finish (salt hazards + run loop + title screen + audio + export) — agent resumed. 2) Fix word_list.txt in export include filter. 3) Export Web + verify on Pages. 4) Create itch page via itch_web (if not exists). 5) Butler push to slothitude/slime-line:html5. 6) Aaron publishes + submits to Humboldt jam (deadline Sept 26 1AM). 7) Devlog from diary. 8) Asset pack update. DONE: M1 M2 green (45 checks), lore + sketches + almanac page complete.
 
+
+## 2026-09-23 00:20 — Milestone 3 — the salt comes for those who keep taking
+
+The garden is now a run. Salt crystals bloom at the wall-hugging edges (their clock starts only after your first spelled word — 14s of grace — and tightens with score, 6s down to 1.8s), salt kills on touch: the slug's chain resets, a bug dies without paying, one life and THE GARDEN REMEMBERS asks you back. Best score and RUN N persist to a 3-line user:// save; a tap RETRY rebuilds the garden clean. The title screen sits over the drifting garden (logo, slow slug, five bugs), and every sound is synthesized in code — squelch steps, chomps, the wrong-buzz, a word-complete arpeggio with confetti, gold sparkle, salt crunch, the low game-over, a title sting — 8 cues through a 6-voice pool, mute persisted. Juice: score-fly numbers, multiplier throb, salt-proximity shiver, a red vignette when the field crowds with crystals, big confetti on word completion, bug pop-in.
+
+The gates earned their keep. The first replay run died mid-spell to a salt spawned at t<1s — the grace gate was born there. Then the spell-run itself stopped reproducing: three suspects unmasked in turn (the shiver drew randf_range twice a frame, the confetti spent the global RNG, and M3's heavier first frame — 8 synthesized cues — pushed the physics engine into catch-up steps between steering updates). The RNG draws became deterministic math, and all three replays now run under --fixed-fps 60, byte-identical to a pristine M2 control copy. Export ships the 26,955-word list inside index.pck (include_filter "*.txt" — verified in the baked pck bytes), 0 ERROR lines, 39.3 MB web build. Battery: 23 + 22 + 17 checks green twice, all three replays green twice, import and quit-after clean.
+
+![Milestone 3 — the salt comes](assets/generated/salt_crystal.png)
