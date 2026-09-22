@@ -1,0 +1,27 @@
+{
+	"project": "SLIME LINE",
+	"tagline": "Slugs n' Bugs — a tilt-glide slug, a glowing slime trail, letter-bugs to eat, words to spell, salt to fear",
+	"jam": "Humboldt Game Jam, theme 'Slugs n' Bugs', solo entrant (Aaron), web HTML5, disclosure of AI-assisted build on the itch page",
+	"engine": "Godot 4.7 GDScript, PORTRAIT 540x960, stretch canvas_items/expand, gl_compatibility, web-first",
+	"laws": {
+		"constants_not_magic": "all feel numbers in scripts/feel.gd",
+		"growing_battery": "each milestone adds suites; done = 2x consecutive green",
+		"injectable_input": "COPY scripts/tilt_source.gd from gyro-squadron-45 (jam-legal pre-existing code), touch-drag default on web",
+		"original_assets": "Flux sprites + procedural SFX (owned, in-house generated)"
+	},
+	"core_loop": "glide the slug; leave a persistent glowing slime trail (Line2D ribbon, fades over ~6s); bugs scatter when you get close — chase and eat them; each bug carries a letter; the round shows a TARGET WORD — eating its letters in order fills it; complete the word = big score x multiplier + new word; salt crystals kill on touch; endless escalating spawns",
+	"systems": {
+		"movement": {"glide_accel": 320.0, "drag": 0.90, "max_speed": 240.0},
+		"trail": {"points_max": 90, "fade_seconds": 6.0, "width": 26.0, "glow": true},
+		"bugs": [
+			{"id": "bug_letter", "behavior": "wander + flee when slug within 120px", "carries": "letter"},
+			{"id": "bug_gold", "behavior": "fast直线 dash across, rare", "carries": "any-letter wildcard + 5x points"}
+		],
+		"spelling": {"word_source": "data/word_list.txt common tier (copy SCOWL common from arcade)", "word_len_range": [3, 5], "letters_spawn_bias": "word letters 60% / random 40%", "complete_bonus": 500, "chain_words": "multiplier +0.5 each, resets on salt-death"},
+		"hazard": {"salt": {"spawn_rate": "rises with score", "kills": true}},
+		"score": {"per_bug": 50, "gold_bug": 250, "word_complete": 500 * multiplier},
+		"run": {"lives": 1, "death": "salt touch", "best_score_persisted": true}
+	},
+	"art": ["slug_player", "bug_green", "bug_gold", "salt_crystal", "tile_garden", "title_logo"],
+	"milestones": ["1 SLUG CORE: glide + slime trail + wandering bugs + eating (the juice)", "2 letters + target word + scoring", "3 salt + escalation + run loop + HUD + SFX", "4 itch build + page copy"]
+}

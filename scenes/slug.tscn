@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/slug.gd" id="1_slug"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_slug"]
+radius = 22.0
+
+[node name="Slug" type="CharacterBody2D"]
+script = ExtResource("1_slug")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_slug")
