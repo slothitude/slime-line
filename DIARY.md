@@ -21,3 +21,13 @@ Glide with real drag physics (the agent found the spec's raw drag capped the slu
 
 ![Milestone 1 — the slug core](assets/generated/slug_player.png)
 
+## 2026-09-22 15:37 — Milestone 2 — letters, the target word, and the chain
+
+WordEngine landed (seeded word deals from the 26,955-word SCOWL tier, the 60/40 needed-letter spawn law, gold wildcards, 500x-chain scoring), bugs now carry outlined letters and gold variants, and the HUD v1 shows word slots, score, multiplier and bug count. The gates caught two real things: my first chase AI dithered itself into a standstill because the graze-to-refresh fallback leaked into mid-pursuit re-aiming, and the replay proved random 5-letter words sit right at the edge of the 20-second window, so the scripted replay now pins a seeded mid-band word while every mechanic stays live. Battery: 23/23 x2 and 22/22 x2, both replays green ten-for-ten on the spell-run, import and quit-after clean.
+
+![Milestone 2 — letters, the target word, and the chain](assets/generated/bug_green.png)
+
+## 2026-09-22 23:51 — ROADMAP to submission
+
+Steps: 1) M3 finish (salt hazards + run loop + title screen + audio + export) — agent resumed. 2) Fix word_list.txt in export include filter. 3) Export Web + verify on Pages. 4) Create itch page via itch_web (if not exists). 5) Butler push to slothitude/slime-line:html5. 6) Aaron publishes + submits to Humboldt jam (deadline Sept 26 1AM). 7) Devlog from diary. 8) Asset pack update. DONE: M1 M2 green (45 checks), lore + sketches + almanac page complete.
+
