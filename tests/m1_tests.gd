@@ -40,6 +40,10 @@ func _run() -> void:
 	v = Slug.glide_velocity(Vector2(200.0, 200.0), Vector2(1.0, 1.0), DT)
 	check("glide_clamps_diagonal_too", near(v.length(), Feel.MAX_SPEED), "v=%f" % v.length())
 
+	v = Slug.glide_velocity(Vector2(-100.0, 0.0), Vector2.RIGHT, DT)
+	check("glide_brakes_against_momentum",
+		near(v.x, -100.0 * Feel.DRAG + Feel.GLIDE_ACCEL * DT) and v.y == 0.0, "v=%f" % v.x)
+
 	# --- bounds ---------------------------------------------------------------
 	var p := Slug.clamp_to_bounds(Vector2(-50.0, 1000.0), PLAY, Feel.SLUG_BOUNDS_MARGIN_PX)
 	check("bounds_clamps_outside_inside",

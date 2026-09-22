@@ -15,3 +15,9 @@ A found document from the world (see LORE.md) and its sketch now live in this re
 
 ![Lore recovered](diary_images/sketch_almanac_page.png)
 
+## 2026-09-22 13:55 — Milestone 1 — the slug core
+
+Glide with real drag physics (the agent found the spec's raw drag capped the slug below bug-flee speed and fixed the semantics — braking on counter-input), the glowing slime ribbon with age-faded points and additive glow, bugs that wander, flee within 120px, and pop when eaten. 23/23 twice; the 12-second chase replay eats 4-6 bugs and never loses the trail.
+
+![Milestone 1 — the slug core](assets/generated/slug_player.png)
+

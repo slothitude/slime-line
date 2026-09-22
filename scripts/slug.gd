@@ -56,9 +56,18 @@ func _process(_delta: float) -> void:
 
 # ------------------------------------------------------------------- input --
 
-## Final steering direction from the two tilt axes (-1..1 each).
+## Final steering direction from the two tilt axes.
+## The two TiltSource instances supply the raw axis readings (touch drag or
+## device tilt); shaping is applied to the combined deflection MAGNITUDE and
+## the DIRECTION is preserved. Shaping per-axis instead would quadratically
+## suppress small correction components (0.1 -> ~0.014) and wreck aim — the
+## curve was tuned for 1D plane tilt, not a 2D steering vector.
 func read_input() -> Vector2:
-	return Vector2(tilt_x.read_output(), tilt_y.read_output())
+	var raw := Vector2(tilt_x.read_raw(), tilt_y.read_raw())
+	if raw.length() < 0.001:
+		return Vector2.ZERO
+	var shaped: float = TiltSource.shape(raw.length())
+	return raw.normalized() * shaped
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -94,15 +103,26 @@ func set_input_mode(mode: String) -> void:
 # --------------------------------------------------------------- pure math --
 
 ## One step of the glide feel: accel toward input, drag, clamp to MAX_SPEED.
-## DRAG is per-frame coasting friction, applied whenever the player is not
-## thrusting. While thrusting it is suspended — applied unconditionally the
-## fixed point of accel-vs-drag settles the slug at ~48 px/s (slower than a
-## fleeing bug at 160) and MAX_SPEED would never be reachable.
+## DRAG (0.90/frame) is coasting friction. Applied unconditionally while
+## thrusting it would pin terminal speed at ~48 px/s (slower than a fleeing
+## bug), so thrust sustains the along-input component. Two cases get friction:
+## - no input: full coast decay;
+## - input opposing existing momentum (v·dir < 0): the along component decays
+##   too, otherwise reversing takes ~1.5s of pure arcing and the slug orbits
+##   its target instead of turning.
 static func glide_velocity(vel: Vector2, dir: Vector2, delta: float) -> Vector2:
-	var v := vel + dir * Feel.GLIDE_ACCEL * delta
+	var drag := pow(Feel.DRAG, delta * 60.0)
+	var v := vel
 	if dir.length() < 0.01:
-		v *= pow(Feel.DRAG, delta * 60.0)
-	elif v.length() > Feel.MAX_SPEED:
+		v *= drag
+	else:
+		var d := dir.normalized()
+		var along := v.dot(d)
+		if along < 0.0:
+			along *= drag
+		var perp := (v - d * v.dot(d)) * drag
+		v = d * (along + Feel.GLIDE_ACCEL * delta) + perp
+	if v.length() > Feel.MAX_SPEED:
 		v = v.normalized() * Feel.MAX_SPEED
 	return v
 
